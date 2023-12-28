@@ -1,0 +1,251 @@
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Autoregressive diffusion creates Gifs from images using motion-magnitude guidance.">
+  <meta name="keywords" content="Pix2Gif, image-to-video, diffusion">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pix2Gif: Motion-Guided Autoregressive Diffusion for Gif Generation</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/grid.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <style>
+    .video-margin {
+      margin-bottom: 20px; 
+    }
+  </style>
+  <style>
+  .reduce-space {
+    margin-bottom: -100px;  
+  }
+</style>
+</head>
+<body>
+
+
+<section class="hero">
+    <div class="reduce-space">
+    <div class="hero-body">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                <h1 class="title is-1 publication-title"><span class='main-title'>Pix2Gif: Motion-Guided <br> Autoregressive Diffusion for Gif Generation</span></h1>
+                <div class="is-size-5 publication-authors">
+                    <span class="author-block">
+                        <a href="https://hiteshk03.github.io/">Hitesh Kandala</a><sup>1</sup>,</span>
+                    <span class="author-block">
+                        <a href="https://jwyang.github.io/">Jianwei Yang</a><sup>2</sup>
+                    </span>
+                    </div>
+        
+                    <div class="is-size-5 publication-authors">
+                    <span class="author-block"><sup>1</sup>Microsoft Research India,</span>
+                    <span class="author-block"><sup>2</sup>Microsoft Research Redmond</span>
+                    </div>  
+
+                    <div class="column has-text-centered">
+                        <div class="publication-links">
+                        <!-- PDF Link. -->
+                        <!-- <span class="link-block">
+                            <a href="https://arxiv.org/pdf/2011.12948"
+                            class="external-link button is-normal is-rounded is-dark">
+                            <span class="icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </span>
+                            <span>Paper</span>
+                            </a>
+                        </span>
+                        <span class="link-block">
+                            <a href="https://arxiv.org/abs/2011.12948"
+                            class="external-link button is-normal is-rounded is-dark">
+                            <span class="icon">
+                                <i class="ai ai-arxiv"></i>
+                            </span>
+                            <span>arXiv</span>
+                            </a>
+                        </span> -->
+                        <!-- Video Link. -->
+                        <!-- <span class="link-block">
+                            <a href="https://www.youtube.com/watch?v=MrKrnHhk8IA"
+                            class="external-link button is-normal is-rounded is-dark">
+                            <span class="icon">
+                                <i class="fab fa-youtube"></i>
+                            </span>
+                            <span>Video</span>
+                            </a>
+                        </span> -->
+                        <!-- Code Link. -->
+                        <span class="link-block">
+                            <a href="https://github.com/hiteshK03/Pix2Gif"
+                            class="external-link button is-normal is-rounded is-dark">
+                            <span class="icon">
+                                <i class="fab fa-github"></i>
+                            </span>
+                            <span>Code</span>
+                            </a>
+                        </span>
+                        <!-- Dataset Link. -->
+                        <!-- <span class="link-block">
+                            <a href="https://github.com/google/nerfies/releases/tag/0.1"
+                            class="external-link button is-normal is-rounded is-dark">
+                            <span class="icon">
+                                <i class="far fa-images"></i>
+                            </span>
+                            <span>Data</span>
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <!-- <div class="rows is-centered">
+        <figure>
+          <iframe width="100%" height="56.25%" src="https://www.youtube.com/embed/3vo6mzk9K4s?si=cLkofep9H7AHOm5V?&playlist=3vo6mzk9K4s&loop=1&autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+          <figcaption class="tagline">
+            Our one-step generator achieves comparable image quality with StableDiffusion v1.5 while being 30x faster.
+        </figure>
+        <div class="content has-text-justified">
+          <p>
+            Diffusion models are known to approximate the score function of the distribution they are trained on. 
+            In other words, an unrealistic synthetic image can be directed toward higher probability density region through the denoising process (see <a href="https://dreamfusion3d.github.io" style="color: red;">SDS</a>). 
+            Our core idea is training two diffusion models to estimate not only the score function of the target real distribution, but also that of the fake distribution. 
+            We construct a gradient update to our generator as the difference between the two scores, essentially nudging the generated images toward higher realism as well as lower fakeness (see <a href="https://ml.cs.tsinghua.edu.cn/prolificdreamer/" style="color: red;">VSD</a>). 
+            Our method is similar to GANs in that a critic is jointly trained with the generator to minimize a divergence between the real and fake distributions, but differs in that our training does not play an adversarial game that may cause training instability, and our critic can fully leverage the weights of a pretrained diffusion model. 
+            Combined with a simple regression loss to match the output of the multi-step diffusion model, our method outperforms all published few-step diffusion approaches, reaching 2.62 FID on ImageNet 64x64 and 11.49 FID on zero-shot COCO-30k, comparable to Stable Diffusion but orders of magnitude faster. 
+            Utilizing FP16 inference, our model generates images at 20 FPS on modern hardware.
+        </p>
+        </div>
+        <br> 
+      </div> -->
+    <!--/ Abstract. -->
+  </div>
+  <!-- <div class="container is-max-desktop">
+    <div class="rows is-centered">
+      <div class="row">
+        <h2 class="title is-3 has-text-centered">DMD Method Overview</h2>
+      </div>
+      <br><br>
+      <img src="images/overview.png" alt="Method Overview">
+      <br><br>
+      <p>
+        We train one-step generator <strong>G<sub>θ</sub></strong> to map random noise <strong>z</strong> into a realistic image. 
+        To match the multi-step sampling outputs of the diffusion model, we pre-compute a collection of noise--image pairs, and occasionally load the noise from the collection and enforce LPIPS 
+        <span style="color: green;">regression loss</span> between our one-step generator and the diffusion output. 
+        Furthermore, we provide <strong><span style="color: red;">distribution matching gradient ∇<sub>θ</sub> D<sub>KL</sub></span></strong> to the fake image to enhance realism. 
+        We inject a random amount of noise to the fake image and pass it to two diffusion models, one pretrained on the real data and the other continually trained on the fake images with a 
+        <span style="color: blue;">diffusion loss</span>, to obtain its denoised versions. The denoising scores (visualized as mean prediction in the plot) indicate directions to make the images more realistic or fake. The difference between the two represents the direction toward more realism and less fakeness and is backpropagated to the one-step generator.
+      </p>      
+    </div>
+  </div> -->
+  <br><br>
+
+  <div class="container is-max-desktop">
+    <div class="rows is-centered">
+      <div class="row">
+        <h2 class="title is-3 has-text-centered">Our Examples</h2>
+      </div>
+
+      <br><br>
+      
+      <div class="comparison-set">
+        <p style="text-align: center;">A cat is playing with wool.</p><br>
+        <div class="grid">
+          <div class="grid-item">
+            <img src="static/imgs/cat_playing_wool.jpeg" alt="Input Image">
+            <p class="image-label"><strong>Input Image</strong></p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/cat_playing_wool.gif" alt="Pix2Gif Image">
+            <p class="image-label"><strong>Ours (Pix2Gif)</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <br><br>
+
+      <div class="row">
+        <h2 class="title is-3 has-text-centered">Comparison to Other Image-to-Video Methods</h2>
+      </div>
+
+      <br><br>
+
+      <div class="comparison-set">
+        <p style="text-align: center;">A cat is playing with wool.</p><br>
+        <div class="grid">
+          <div class="grid-item">
+            <img src="static/imgs/cat_dynamic_crafter.gif" alt="DynamiCrafter Image">
+            <p class="image-label"><strong>DynamiCrafter</strong></p>
+          </div>
+          <!-- <div class="grid-item">
+            <img src="static/imgs/cat_svd.gif" alt="Instaflow Image">
+            <p class="image-label"><strong>SVD</strong></p>
+          </div> -->
+          <div class="grid-item">
+            <img src="static/imgs/A_cat_is_playing_with_wool._seed870430723537518.gif" alt="Pika Labs Image">
+            <p class="image-label"><strong>Pika Labs</strong></p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/cat_playing_wool.gif" alt="Pix2Gif Image">
+            <p class="image-label"><strong>Ours</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <!-- <pre><code>@article{kandala2023pix2gif,
+    title={Pix2Gif: Motion-Guided Autoregressive Diffusion for Gif Generation},
+    author={Kandala, Hitesh and Yang, Jianwei},
+    journal={arXiv preprint arXiv:},
+    year={2023}
+  }</code></pre> -->
+  </div>
+</section>
+
+
+<footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>
+              Website source based on <a href="https://github.com/nerfies/nerfies.github.io">this source code</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
