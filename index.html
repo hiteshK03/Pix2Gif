@@ -182,7 +182,7 @@
       </div>
       <br><br>
       <p>
-        Our model is built on the Stable Diffusion but with newly introduced motion-guided warping module. We are inspired by Instruct-Pix2Pix and formualte the gif generation as a temporal instructed image editing problem. 
+        Our model is built on the Stable Diffusion but with newly introduced motion-guided warping module. We formualte the gif generation as a temporal instructed image editing problem. 
       </p>
       <br><br>
       <img src="images/model_upscale.png" alt="Method Overview">
@@ -194,7 +194,7 @@
       </div>
       <br><br>
       <p>
-        We use the TGIF dataset for our model training. The dataset contains 100K animated GIFs with captions. We extract frames from the GIFs and use the captions as the text prompts. We further curate the dataset by removing the GIFs with less than 5 frames and the GIFs with the same captions. The final dataset contains 100K GIFs with 5-20 frames. We split the dataset into 80K for training and 20K for testing. 
+        We use the <a href="https://github.com/raingo/TGIF-Release">TGIF dataset</a> for our model training. The dataset contains 100K animated GIFs with captions. We extract frames from the GIFs and use the captions as the text prompts. We further curate the dataset by removing the GIFs with less than 5 frames and the GIFs with the same captions. The final dataset contains 100K GIFs with 5-20 frames. We split the dataset into 80K for training and 20K for testing. 
       </p>
       <br><br>
       <img src="images/dataset_upscale.png" alt="Dataset Overview">
