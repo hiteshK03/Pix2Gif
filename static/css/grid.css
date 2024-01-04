@@ -14,7 +14,17 @@
     height: 80%; /* Adjust the height as needed */
     /* height: auto; Maintain aspect ratio */
   }
+
+  .grid-data {
+    text-align: center; /* Center the content */
+  }
   
+  .grid-data img {
+    width: 100%; /* Adjust the width as needed */
+    height: 100%; /* Adjust the height as needed */
+    /* height: auto; Maintain aspect ratio */
+  }
+
   .image-label {
     margin-top: 5px; /* Space between image and label */
   }
