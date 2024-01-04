@@ -19,7 +19,7 @@
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="stylesheet" href="./static/css/grid.css">
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bibtex-js/0.3.0/bibtex.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
   <script src="./static/js/bulma-carousel.min.js"></script>
@@ -168,6 +168,40 @@
   <div class="container is-max-desktop">
     <div class="rows is-centered">
       <div class="row">
+        <h2 class="title is-3 has-text-centered">Abstract</h2>
+      </div>
+      <br><br>
+      <p>
+        We present Pix2Gif, a motioned-guided diffusion model for autoregressive gif generation. Given an initial image and a text prompt, our model formulates the gif generation as an image translation problem, which autoregressively generates a number of consecutive frames guided by the motion magnitude. To ensure the model follows the motion guidance, we propose a new motion-guided warping module to transform the image features in the hidden space. For the model training, we extract frames from a video-caption dataset - TGIF which after curation is rich in capturing the motion changes between the frames.  Our model is built on the Stable Diffusion model and trained on our curated data. Extensive qualitative and quantitative experiments demonstrate the effectiveness of our model, which not only captures the semantic prompt from text but also the spatial ones from motion guidance.        
+      </p>    
+      <br><br>
+      <br><br>
+
+      <div class="row">
+        <h2 class="title is-3 has-text-centered">Pix2Gif</h2>
+      </div>
+      <br><br>
+      <p>
+        Our model is built on the Stable Diffusion but with newly introduced motion-guided warping module. We are inspired by Instruct-Pix2Pix and formualte the gif generation as a temporal instructed image editing problem. 
+      </p>
+      <br><br>
+      <img src="images/model_upscale.png" alt="Method Overview">
+      <br><br>
+      <br><br>
+
+      <div class="row">
+        <h2 class="title is-3 has-text-centered">Dataset</h2>
+      </div>
+      <br><br>
+      <p>
+        We use the TGIF dataset for our model training. The dataset contains 100K animated GIFs with captions. We extract frames from the GIFs and use the captions as the text prompts. We further curate the dataset by removing the GIFs with less than 5 frames and the GIFs with the same captions. The final dataset contains 100K GIFs with 5-20 frames. We split the dataset into 80K for training and 20K for testing. 
+      </p>
+      <br><br>
+      <img src="images/dataset_upscale.png" alt="Dataset Overview">
+      <br><br>
+      <br><br>
+
+      <div class="row">
         <h2 class="title is-3 has-text-centered">Our Examples</h2>
       </div>
 
@@ -223,12 +257,12 @@
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
-    <!-- <pre><code>@article{kandala2023pix2gif,
+    <pre><code>@article{kandala2023pix2gif,
     title={Pix2Gif: Motion-Guided Autoregressive Diffusion for Gif Generation},
     author={Kandala, Hitesh and Yang, Jianwei},
-    journal={arXiv preprint arXiv:},
-    year={2023}
-  }</code></pre> -->
+    journal={arXiv preprint},
+    year={2024}
+  }</code></pre>
   </div>
 </section>
 
