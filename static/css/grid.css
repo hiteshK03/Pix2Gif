@@ -11,7 +11,8 @@
   
   .grid-item img {
     width: 100%; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
+    height: 80%; /* Adjust the height as needed */
+    /* height: auto; Maintain aspect ratio */
   }
   
   .image-label {

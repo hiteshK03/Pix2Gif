@@ -190,18 +190,6 @@
       <br><br>
 
       <div class="row">
-        <h2 class="title is-3 has-text-centered">Dataset</h2>
-      </div>
-      <br><br>
-      <p>
-        We use the <a href="https://github.com/raingo/TGIF-Release">TGIF dataset</a> for our model training. The dataset contains 100K animated GIFs with captions. We extract frames from the GIFs and use the captions as the text prompts. We further curate the dataset by removing the GIFs with less than 5 frames and the GIFs with the same captions. The final dataset contains 100K GIFs with 5-20 frames. We split the dataset into 80K for training and 20K for testing. 
-      </p>
-      <br><br>
-      <img src="images/dataset_upscale.png" alt="Dataset Overview">
-      <br><br>
-      <br><br>
-
-      <div class="row">
         <h2 class="title is-3 has-text-centered">Our Examples</h2>
       </div>
 
@@ -215,7 +203,7 @@
             <p class="image-label"><strong>Input Image</strong></p>
           </div>
           <div class="grid-item">
-            <img src="static/imgs/cat_playing_wool.gif" alt="Pix2Gif Image">
+            <img src="static/imgs/cat_playing_wool_pix2gif.gif" alt="Pix2Gif Image">
             <p class="image-label"><strong>Ours (Pix2Gif)</strong></p>
           </div>
         </div>
@@ -224,17 +212,21 @@
       <br><br>
 
       <div class="row">
-        <h2 class="title is-3 has-text-centered">Comparison to Other Image-to-Video Methods</h2>
+        <h2 class="title is-3 has-text-centered">Comparison to state-of-the-art Image-to-Video Methods</h2>
       </div>
 
       <br><br>
 
       <div class="comparison-set">
-        <p style="text-align: center;">A cat is playing with wool.</p><br>
+        <p style="text-align: center; font-size: 20px;">A cat is playing with wool.</p>
         <div class="grid">
           <div class="grid-item">
+            <img src="static/imgs/cat_playing_wool.jpeg" alt="Input Image">
+            <p class="image-label"><strong>Input Image</strong></p>
+          </div>
+          <div class="grid-item">
             <img src="static/imgs/cat_dynamic_crafter.gif" alt="DynamiCrafter Image">
-            <p class="image-label"><strong>DynamiCrafter</strong></p>
+            <p class="image-label"><strong><a href="https://huggingface.co/spaces/Doubiiu/DynamiCrafter">DynamiCrafter</a></strong></p>
           </div>
           <!-- <div class="grid-item">
             <img src="static/imgs/cat_svd.gif" alt="Instaflow Image">
@@ -242,14 +234,67 @@
           </div> -->
           <div class="grid-item">
             <img src="static/imgs/A_cat_is_playing_with_wool._seed870430723537518.gif" alt="Pika Labs Image">
-            <p class="image-label"><strong>Pika Labs</strong></p>
+            <p class="image-label"><strong><a href="https://pika.art/">Pika Labs</a></strong></p>
           </div>
           <div class="grid-item">
-            <img src="static/imgs/cat_playing_wool.gif" alt="Pix2Gif Image">
+            <img src="static/imgs/cat_playing_wool_pix2gif.gif" alt="Pix2Gif Image">
+            <p class="image-label"><strong>Ours</strong></p>
+          </div>
+        </div>
+        <br><br>
+        <p style="text-align: center; font-size: 20px;">The two person are running.</p>
+        <div class="grid">
+          <div class="grid-item">
+            <img src="static/imgs/two_person_walking.jpg" alt="Input Image">
+            <p class="image-label"><strong>Input Image</strong></p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/two_person_walking_dynamicrafter.gif" alt="DynamiCrafter Image">
+            <p class="image-label"><strong><a href="https://huggingface.co/spaces/Doubiiu/DynamiCrafter">DynamiCrafter</a></strong></p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/two_person_walking_pika.gif" alt="Pika Labs Image">
+            <p class="image-label"><strong><a href="https://pika.art/">Pika Labs</a></strong></p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/two_person_walking_pix2gif.gif" alt="Pix2Gif Image" height="300">
+            <p class="image-label"><strong>Ours</strong></p>
+          </div>
+        </div>
+        <br><br>
+        <p style="text-align: center; font-size: 20px;">A big wave.</p>
+        <div class="grid">
+          <div class="grid-item">
+            <img src="static/imgs/japan_wave.jpg" alt="Input Image">
+            <p class="image-label"><strong>Input Image</strong></p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/japan_wave_dynamicrafter.gif" alt="DynamiCrafter Image">
+            <p class="image-label"><strong><a href="https://huggingface.co/spaces/Doubiiu/DynamiCrafter">DynamiCrafter</a></strong></p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/japan_wave_pika.gif" alt="Pika Labs Image">
+            <p class="image-label"><strong><a href="https://pika.art/">Pika Labs</a></strong></p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/japan_wave_pix2gif.gif" alt="Pix2Gif Image" height="300">
             <p class="image-label"><strong>Ours</strong></p>
           </div>
         </div>
       </div>
+      <br><br>      
+      <br><br>      
+      <div class="row">
+        <h2 class="title is-3 has-text-centered">Dataset</h2>
+      </div>
+      <br><br>
+      <p>
+        We use the <a href="https://github.com/raingo/TGIF-Release">TGIF dataset</a> for our model training. The dataset contains 100K animated GIFs with captions. We extract frames from the GIFs and use the captions as the text prompts. We further curate the dataset by removing the GIFs with less than 5 frames and the GIFs with the same captions. The final dataset contains 100K GIFs with 5-20 frames. We split the dataset into 80K for training and 20K for testing. 
+      </p>
+      <br><br>
+      <img src="images/dataset_upscale.png" alt="Dataset Overview">
+      <br><br>
+      <br><br>      
     </div>
   </div>
 </section>
