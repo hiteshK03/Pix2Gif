@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="Autoregressive diffusion creates Gifs from images using motion-magnitude guidance.">
+        content="diffusion creates Gifs from images using motion-magnitude guidance.">
   <meta name="keywords" content="Pix2Gif, image-to-video, diffusion">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Pix2Gif: Motion-Guided Autoregressive Diffusion for Gif Generation</title>
+  <title>Pix2Gif: Motion-Guided Diffusion for Gif Generation</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -45,7 +45,7 @@
         <div class="container is-max-desktop">
             <div class="columns is-centered">
                 <div class="column has-text-centered">
-                <h1 class="title is-1 publication-title"><span class='main-title'>Pix2Gif: Motion-Guided <br> Autoregressive Diffusion for Gif Generation</span></h1>
+                <h1 class="title is-1 publication-title"><span class='main-title'>Pix2Gif: Motion-Guided Diffusion <br> for GIF Generation</span></h1>
                 <div class="is-size-5 publication-authors">
                     <span class="author-block">
                         <a href="https://hiteshk03.github.io/">Hitesh Kandala</a><sup>1</sup>,
@@ -256,6 +256,32 @@
       <br><br>
 
       <div class="row">
+        <h2 class="title is-3 has-text-centered">Compositionality of actions</h2>
+      </div>
+
+      <br><br>
+      
+      <div class="comparison-set">
+        <!-- <p style="text-align: center; font-size: 20px;">Prompt: A cat is playing with wool.</p> -->
+        <div class="grid">
+          <div class="grid-item">
+            <img src="static/imgs/cat_is_playing_with_wool.gif" alt="Input Image">
+            <p class="image-label">Action 1: cat is playing with wool.</p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/cat_is_dancing.gif" alt="Pix2Gif Image">
+            <p class="image-label">Action 2: cat is dancing.</p>
+          </div>
+          <div class="grid-item">
+            <img src="static/imgs/cat_is_dancing_while_playing_with_wool.gif" alt="Pix2Gif Image">
+            <p class="image-label">Action 1+2: cat is dancing while playing with wool.</p>
+          </div>          
+        </div>
+      </div>
+
+      <br><br>
+
+      <div class="row">
         <h2 class="title is-3 has-text-centered">Comparison to state-of-the-art Image-to-Video Methods</h2>
       </div>
 
@@ -372,7 +398,7 @@
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
     <pre><code>@article{kandala2024pix2gif,
-    title={Pix2Gif: Motion-Guided Autoregressive Diffusion for Gif Generation},
+    title={Pix2Gif: Motion-Guided Diffusion for GIF Generation},
     author={Kandala, Hitesh and Gao, Jianfeng and Yang, Jianwei},
     journal={arXiv preprint},
     year={2024}
