@@ -216,7 +216,12 @@
       </div>
       <br><br>
       <p>
-        We present Pix2Gif, a motioned-guided diffusion model for autoregressive gif generation. Given an initial image and a text prompt, our model formulates the gif generation as an image translation problem, which autoregressively generates a number of consecutive frames guided by the motion magnitude. To ensure the model follows the motion guidance, we propose a new motion-guided warping module to transform the image features in the hidden space. For the model training, we extract frames from a video-caption dataset - TGIF which after curation is rich in capturing the motion changes between the frames.  Our model is built on the Stable Diffusion model and trained on our curated data. Extensive qualitative and quantitative experiments demonstrate the effectiveness of our model, which not only captures the semantic prompt from text but also the spatial ones from motion guidance.        
+        We present Pix2Gif, a motion-guided diffusion model for image-to-GIF (video) generation. We tackle this problem differently by formulating the task as an image translation problem steered by text and motion magnitude prompts. 
+        To ensure that the model adheres to motion guidance, we propose a new motion-guided warping module to spatially transform the features of the source image conditioned on the two types of prompts. 
+        Furthermore, we introduce a perceptual loss to ensure the transformed feature map remains within the same space as the target image, ensuring content consistency and coherence. 
+        In preparation for the model training, we meticulously curated data by extracting coherent image frames from the TGIF video-caption dataset, which provides rich information about the temporal changes of subjects. 
+        After pretraining, we apply our model in a zero-shot manner to a number of video datasets. Extensive qualitative and quantitative experiments demonstrate the effectiveness of our model -- it not only captures the semantic prompt from text but also the spatial ones from motion guidance. 
+        We train all our models using a single node of 16xV100 GPUs.        
       </p>    
       <br><br>
       <br><br>
@@ -226,7 +231,7 @@
       </div>
       <br><br>
       <p>
-        Our model is built on the Stable Diffusion but with newly introduced motion-guided warping module. We formualte the gif generation as a temporal instructed image editing problem. 
+        Our model is built on the Stable Diffusion but with newly introduced motion-guided warping module. We formualte the GIF generation as a temporal instructed image editing problem. 
       </p>
       <br><br>
       <img src="images/model_upscale.png" alt="Method Overview">
