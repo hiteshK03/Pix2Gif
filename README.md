@@ -6,6 +6,18 @@
 
 [Hitesh Kandala](https://hiteshk03.github.io/)<sup>1</sup>, [Jianfeng Gao](https://www.microsoft.com/en-us/research/people/jfgao/)<sup>2</sup>, [Jianwei Yang](https://jwyang.github.io/)<sup>2</sup>
 
+## Disclaimer 
+
+Pix2Gif is a pure research project. It takes a user-given image and generates a gif following user prompts. It is provided as-is for educational and informational purposes only. The developers and contributors of Pix2Gif do not bear any responsibility for any misuse or damage caused by the project or its derivatives.
+
+### Legal and Ethical Use
+
+**Intellectual Property Rights**: Users of Pix2Gif are responsible for ensuring that the images and videos they process with the software do not infringe on the intellectual property rights of others. It is the user's responsibility to obtain the necessary permissions and rights for any content they use.
+
+**Compliance with Laws**: Users must comply with all applicable laws and regulations in their use of Pix2Gif. This includes laws related to privacy, copyright, and data protection.
+
+**Content Responsibility**: The developers of Pix2Gif do not endorse or condone the creation of illegal or unethical content. Users are solely responsible for the content they create using the model.
+
 ## Setup
 ### Set up python virtual environment
 ```bash
