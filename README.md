@@ -1,7 +1,7 @@
 # Pix2Gif: Motion-Guided Diffusion for GIF Generation
 ![teaser_op](https://github.com/hiteshK03/Pix2Gif/assets/45922320/3d8ca72e-b2f3-48fd-a732-574987454fd3)
 
-:grapes: \[[arXiv](https://arxiv.org/abs/2403.04634)\] &nbsp; :apple: \[[Demo](https://520a83a7524ec7d864.gradio.live/)\] &nbsp; :orange: \[[Project Page](https://hiteshk03.github.io/Pix2Gif/)\]
+:grapes: \[[arXiv](https://arxiv.org/abs/2403.04634)\] &nbsp; :orange: \[[Project Page](https://hiteshk03.github.io/Pix2Gif/)\]
 
 
 [Hitesh Kandala](https://hiteshk03.github.io/)<sup>1</sup>, [Jianfeng Gao](https://www.microsoft.com/en-us/research/people/jfgao/)<sup>2</sup>, [Jianwei Yang](https://jwyang.github.io/)<sup>2</sup>
