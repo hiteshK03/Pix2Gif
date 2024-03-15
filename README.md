@@ -5,7 +5,6 @@
 
 
 [Hitesh Kandala](https://hiteshk03.github.io/)<sup>1</sup>, [Jianfeng Gao](https://www.microsoft.com/en-us/research/people/jfgao/)<sup>2</sup>, [Jianwei Yang](https://jwyang.github.io/)<sup>2</sup>
-<br> Microsoft Research India<sup>1</sup>, Microsoft Research Redmond<sup>2</sup>
 
 ## Setup
 ### Set up python virtual environment
