@@ -30,16 +30,17 @@ class CFGDenoiser(nn.Module):
         self.inner_model = model
 
     def forward(self, z, sigma, cond, uncond, text_cfg_scale, image_cfg_scale):
-        cfg_z = einops.repeat(z, "1 ... -> n ...", n=3)
-        cfg_sigma = einops.repeat(sigma, "1 ... -> n ...", n=3)
+        # cfg_z = einops.repeat(z, "8 ... -> n ...", n=24)
+        num_frames = z.shape[0]
+        cfg_z = torch.cat([z]*3)
+        cfg_sigma = sigma.repeat(3)
         cfg_cond = {
-            "c_crossattn": [torch.cat([cond["c_crossattn"][0], uncond["c_crossattn"][0], uncond["c_crossattn"][0]]), cond["c_crossattn"][1]],
-            "c_concat": [torch.cat([cond["c_concat"][0], cond["c_concat"][0], uncond["c_concat"][0]])],
+            # "c_crossattn": [torch.cat([cond["c_crossattn"][0], uncond["c_crossattn"][0], uncond["c_crossattn"][0]]), cond["c_crossattn"][1]],
+            "c_crossattn": [torch.cat([cond["c_crossattn"][i][0] for i in range(num_frames)] + [uncond["c_crossattn"][0]]*(2*num_frames)), [cond["c_crossattn"][i][1] for i in range(num_frames)]*3],
+            # "c_concat": [torch.cat([cond["c_concat"][0], cond["c_concat"][0], uncond["c_concat"][0]])],
+            "c_concat": [torch.cat([cond["c_concat"][0]]*(2*num_frames) + [uncond["c_concat"][0]]*num_frames)],
         }
-        # cond["c_crossattn"][0]: torch.Size([1, 77, 768])
-        # cond["c_crossattn"][1]: int
-        # "c_crossattn": [torch.Size([3, 77, 768]), int]
-        out_cond, out_img_cond, out_uncond = self.inner_model(cfg_z, cfg_sigma, cond=cfg_cond)
+        out_cond, out_img_cond, out_uncond = self.inner_model(cfg_z, cfg_sigma, cond=cfg_cond).chunk(3)
         return out_uncond + text_cfg_scale * (out_cond - out_img_cond) + image_cfg_scale * (out_img_cond - out_uncond)
 
 
@@ -70,7 +71,7 @@ def load_model_from_config(config, ckpt, vae_ckpt=None, verbose=False):
 def main():
     parser = ArgumentParser()
     parser.add_argument("--config", default="configs/generate.yaml", type=str)
-    parser.add_argument("--ckpt", default="/home/t-hkandala/MSRR/model/instruct-p2p/motioninterval-tgif-per_wt_0.001-forward/train_motioninterval-tgif-per_wt_0.001-forward/checkpoints/trainstep_checkpoints/epoch=000008-step=000024999.ckpt", type=str)
+    parser.add_argument("--ckpt", default="/home/t-hkandala/MSRR/model/instruct-p2p/motioninterval-tgif-t5-llava-grayscale/train_motioninterval-tgif-t5-llava-grayscale/checkpoints/epoch=000011.ckpt", type=str)
     parser.add_argument("--vae_ckpt", default=None, type=str)
     args = parser.parse_args()
 
@@ -95,24 +96,25 @@ def main():
     def generate(
         input_image: Image.Image,
         instruction: str,
-        interval: int,
+        interval: list,
         steps: int,
         seed: int,
         text_cfg_scale: float,
         image_cfg_scale: float,
     ):
         width, height = input_image.size
+        num_frames = len(interval)
         input_image = input_image.resize((resolution, resolution))
 
         if instruction == "":
             return [input_image, seed]
         else:
-            word_interval = number_to_words(interval)
-            instruction = instruction + ' The optical flow is ' + word_interval + '. {}'.format(interval)
+            word_interval_list = [number_to_words(i) for i in interval]
+            instruction_list = [instruction + ' The optical flow is ' + word + '. {}'.format(i) for word, i in zip(word_interval_list, interval)]
 
         with torch.no_grad(), autocast("cuda"), model.ema_scope():
             cond = {}
-            cond["c_crossattn"] = [model.get_learned_conditioning([" ".join(instruction.split(" ")[:-1])]), interval]
+            cond["c_crossattn"] = [[model.get_learned_conditioning([" ".join(instruction.split(" ")[:-1])]), i] for instruction, i in zip(instruction_list, interval)]
             input_image = 2 * torch.tensor(np.array(input_image)).float() / 255 - 1
             input_image = rearrange(input_image, "h w c -> 1 c h w").to(model.device)
             cond["c_concat"] = [model.encode_first_stage(input_image).mode()]
@@ -130,13 +132,15 @@ def main():
                 "image_cfg_scale": image_cfg_scale,
             }
             torch.manual_seed(seed)
-            z = torch.randn_like(cond["c_concat"][0]) * sigmas[0]
+            # z = torch.randn_like(cond["c_concat"][0]) * sigmas[0]
+            z = torch.cat([torch.randn_like(cond["c_concat"][0]) * sigmas[0] for i in range(num_frames)])
             z = K.sampling.sample_euler_ancestral(model_wrap_cfg, z, sigmas, extra_args=extra_args)
             x = model.decode_first_stage(z)
             x = torch.clamp((x + 1.0) / 2.0, min=0.0, max=1.0)
-            x = 255.0 * rearrange(x, "1 c h w -> h w c")
-            edited_image = Image.fromarray(x.type(torch.uint8).cpu().numpy())
-            edited_image = edited_image.resize((width, height))
+            # x = 255.0 * rearrange(x, "1 c h w -> h w c")
+            x = [255.0 * rearrange(x[i:i+1], "1 c h w -> h w c") for i in range(x.shape[0])]
+            edited_image = [Image.fromarray(c.type(torch.uint8).cpu().numpy()) for c in x]
+            edited_image = [img.resize((width, height)) for img in edited_image]
 
             return edited_image
 
@@ -159,13 +163,14 @@ def main():
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
         inter_img = input_image
-        output_name = f"{cap}_{steps}_{seed}_{text_cfg_scale}_{image_cfg_scale}"
         cfg_motion = [int(num.strip()) for num in cfg_motion.split(',')]
-        for motion in cfg_motion:
-            inter_img = generate(input_image, instruction, motion, steps, seed, text_cfg_scale, image_cfg_scale)
-            img_list.append(inter_img)
+        output_name = f"{cap}_{steps}_{seed}_{text_cfg_scale}_{image_cfg_scale}_{cfg_motion}"
+        gen_img_list = generate(input_image, instruction, cfg_motion, steps, seed, text_cfg_scale, image_cfg_scale)
+        # for motion in cfg_motion:
+        #     inter_img = generate(input_image, instruction, motion, steps, seed, text_cfg_scale, image_cfg_scale)
+        #     img_list.append(inter_img)
         output_path = os.path.join(output_dir, output_name)
-        output_path = pil_images_to_gif(img_list, output_path, 4)
+        output_path = pil_images_to_gif(gen_img_list, output_path, 4)
         return output_path
 
     with gr.Blocks(css="footer {visibility: hidden}") as demo:
