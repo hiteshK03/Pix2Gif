@@ -18,7 +18,7 @@ Pix2Gif is a pure research project. It takes a user-given image and generates a 
 
 **Content Responsibility**: The developers of Pix2Gif do not endorse or condone the creation of illegal or unethical content. Users are solely responsible for the content they create using the model.
 
-## Setup
+<!-- ## Setup
 ### Set up python virtual environment
 ```bash
 python3.10 -m venv .pix2gif
@@ -36,7 +36,7 @@ python demo.py
 ```
 
 ## Acknowledgement
-We build our work on top of [InstructPix2Pix](https://github.com/timothybrooks/instruct-pix2pix)
+We build our work on top of [InstructPix2Pix](https://github.com/timothybrooks/instruct-pix2pix) -->
 
 ## Citation
 ```bibtex
